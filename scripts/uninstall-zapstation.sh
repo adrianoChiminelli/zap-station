@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALL_ROOT="${WHATSAPP_INSTALL_ROOT:-$HOME/.local/opt/whatslinux}"
-BIN_DIR="${WHATSAPP_BIN_DIR:-$HOME/.local/bin}"
+INSTALL_ROOT="${ZAP_STATION_INSTALL_ROOT:-$HOME/.local/opt/zapstation}"
+BIN_DIR="${ZAP_STATION_BIN_DIR:-$HOME/.local/bin}"
 DESKTOP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
 
 TARGET_BUNDLE_DIR="$INSTALL_ROOT"
-TARGET_BIN="$BIN_DIR/whatslinux"
-TARGET_DESKTOP="$DESKTOP_DIR/whatslinux.desktop"
+TARGET_BIN="$BIN_DIR/zapstation"
+TARGET_DESKTOP="$DESKTOP_DIR/zapstation.desktop"
 
 REMOVE_SESSION=0
 for arg in "$@"; do
@@ -49,7 +49,7 @@ else
   echo "Nothing found in: $TARGET_DESKTOP"
 fi
 
-SESSION_DIR="$HOME/.local/share/whatsapp-app"
+SESSION_DIR="$HOME/.local/share/zap-station"
 if [[ "$REMOVE_SESSION" -eq 1 ]]; then
   if [[ -d "$SESSION_DIR" ]]; then
     rm -rf "$SESSION_DIR"

@@ -1,7 +1,7 @@
 from PyQt6.QtWebEngineCore import QWebEnginePage
 from PyQt6.QtGui import QDesktopServices
 
-WHATSAPP_HOST = "web.whatsapp.com"
+ZAP_STATION_HOST = "web.whatsapp.com"
 
 
 class LockedPage(QWebEnginePage):
@@ -10,7 +10,7 @@ class LockedPage(QWebEnginePage):
     system's default browser instead of navigating inside the app."""
 
     def acceptNavigationRequest(self, url, nav_type, is_main_frame):
-        if WHATSAPP_HOST in url.host():
+        if ZAP_STATION_HOST in url.host():
             return True
 
         if is_main_frame:

@@ -20,23 +20,23 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-class WhatsAppWindow(QMainWindow):
+class ZapWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("WhatsApp Linux")
+        self.setWindowTitle("ZapStation")
         icon_path = resource_path("assets/icon.png")
         if os.path.exists(icon_path):
             self.setWindowIcon(QIcon(icon_path))
         self.resize(1000, 700)
 
         # Directory where the session will be stored
-        storage_path = os.path.expanduser("~/.local/share/whatsapp-app")
+        storage_path = os.path.expanduser("~/.local/share/zap-station")
         os.makedirs(storage_path, exist_ok=True)
 
         # Named profile, no parent (lifetime managed manually to avoid the
         # uncertain destruction order that triggered the warning
         # "Release of profile requested but WebEnginePage still not deleted")
-        self.profile = QWebEngineProfile("whatsapp-session")
+        self.profile = QWebEngineProfile("zapstation-session")
         self.profile.setPersistentStoragePath(storage_path)
         self.profile.setCachePath(storage_path + "/cache")
         self.profile.setHttpUserAgent(

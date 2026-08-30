@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
-APP_NAME="WhatsLinux"
+APP_NAME="ZapStation"
 BUILD_DIR="$ROOT_DIR/dist"
 VENV_DIR="$ROOT_DIR/.venv"
 
@@ -48,7 +48,7 @@ rm -rf "$BUILD_DIR"
   --contents-directory "." \
   --collect-all PyQt6 \
   --add-data "$ROOT_DIR/assets:assets" \
-  "$ROOT_DIR/WhatsLinux.py"
+  "$ROOT_DIR/ZapStation.py"
 
 echo "Build completed."
 echo "Bundle generated in: $BUILD_DIR/$APP_NAME"
@@ -59,4 +59,4 @@ echo "If a QtWebEngineProcess error appears or the window opens blank,"
 echo "check the logs — --collect-all PyQt6 covers most cases."
 echo ""
 echo "Once the build is validated, run the installation script:"
-echo "  ./scripts/install-whatslinux.sh"
+echo "  ./scripts/install-zapstation.sh"
