@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# PyInstaller / bundle output
+build/
+dist/
+*.spec
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local app/runtime data
+.local/
+*.log
+
+# Qt / web runtime caches
+.cache/
+*.db
+*.sqlite3
+
+# Local user-generated app data
+~/.local/share/whatsapp-app/
