@@ -1,20 +1,20 @@
 # WhatsLinux
-Cliente de WhatsApp Web nativo para Linux, construído com PyQt6 e PyQt6-WebEngine. Uma janela dedicada que carrega apenas o WhatsApp Web, com sessão persistente, tema escuro, notificações nativas e domínio travado — sem barra de endereço, sem abas, sem distrações de navegador.
+Native WhatsApp Web client for Linux, built with PyQt6 and PyQt6-WebEngine. A dedicated window that loads only WhatsApp Web, with persistent session, dark theme, native notifications, and restricted domain access — no address bar, no tabs, no browser distractions.
 
-## Funcionalidades
+## Features
 
-- interface desktop em PyQt6
-- navegação por WebEngine restrita a `web.whatsapp.com`
-- persistência de sessão e cookies no diretório local do usuário
-- integração com notificações do sistema via `notify-send`
+- desktop interface in PyQt6
+- WebEngine navigation restricted to `web.whatsapp.com`
+- session and cookie persistence in the user's local directory
+- system notification integration via `notify-send`
 
-## Requisitos
+## Requirements
 
 - Python 3.10+
 - pip
-- biblioteca `libnotify` para notificações do sistema (`notify-send`), quando disponível
+- `libnotify` library for system notifications (`notify-send`), when available
 
-## Instalação
+## Installation
 
 ```bash
 python3 -m venv .venv
@@ -22,58 +22,58 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Execução em desenvolvimento
+## Running in development
 
 ```bash
 source .venv/bin/activate
 python WhatsLinux.py
 ```
 
-## Empacotamento para Linux
+## Linux packaging
 
-O empacotamento é feito em duas etapas, cada uma com seu próprio script dentro de `scripts/`:
+Packaging is done in two steps, each with its own script inside `scripts/`:
 
-1. **`build-whatslinux.sh`** — cria o ambiente virtual (se necessário), instala as dependências e gera o bundle via PyInstaller (`--onedir`) em `dist/WhatsLinux/`, dentro do próprio projeto.
-2. **`install-whatslinux.sh`** — copia o bundle já gerado para `~/.local/opt`, cria o comando de terminal em `~/.local/bin` e o atalho `.desktop` no menu de aplicativos.
+1. **`build-whatslinux.sh`** — creates the virtual environment if needed, installs dependencies, and generates the PyInstaller bundle (`--onedir`) in `dist/WhatsLinux/` inside the project root.
+2. **`install-whatslinux.sh`** — copies the generated bundle to `~/.local/opt`, creates the terminal command in `~/.local/bin`, and adds the `.desktop` shortcut to the application menu.
 
-Separar as duas etapas permite testar o binário gerado antes de instalá-lo no sistema.
+Separating the two phases allows testing the generated binary before installing it on the system.
 
-### 1. Gerar o build
+### 1. Build the app
 
 ```bash
 chmod +x scripts/build-whatslinux.sh
 ./scripts/build-whatslinux.sh
 ```
 
-O bundle é gerado em `dist/WhatsLinux/`. Antes de seguir para a instalação, teste rodando o executável direto:
+The bundle is generated in `dist/WhatsLinux/`. Before proceeding with installation, test the executable directly:
 
 ```bash
 dist/WhatsLinux/WhatsLinux
 ```
 
-Se a janela abrir e carregar o WhatsApp Web normalmente, o build está validado.
+If the window opens and loads WhatsApp Web normally, the build is validated.
 
-### 2. Instalar no sistema
+### 2. Install on the system
 
 ```bash
 chmod +x scripts/install-whatslinux.sh
 ./scripts/install-whatslinux.sh
 ```
 
-O script falha com uma mensagem clara caso o build ainda não exista, indicando para rodar `build-whatslinux.sh` primeiro.
+The script fails with a clear message if the build does not exist yet, telling you to run `build-whatslinux.sh` first.
 
-### Resultado esperado
+### Expected result
 
-- aplicativo instalado em:
+- application installed in:
   - `$HOME/.local/opt/whatslinux`
-- comando no terminal em:
+- terminal command in:
   - `$HOME/.local/bin/whatslinux`
-- atalho do menu em:
+- app-menu shortcut in:
   - `$HOME/.local/share/applications/whatslinux.desktop`
 
-### Variáveis opcionais
+### Optional variables
 
-Ambas as variáveis são lidas pelo script de instalação (`install-whatslinux.sh`):
+Both variables are read by the installation script (`install-whatslinux.sh`):
 
 ```bash
 WHATSAPP_INSTALL_ROOT="$HOME/.local/opt/whatslinux" \
@@ -81,52 +81,52 @@ WHATSAPP_BIN_DIR="$HOME/.local/bin" \
 ./scripts/install-whatslinux.sh
 ```
 
-### Executando após a instalação
+### Running after installation
 
 ```bash
 whatslinux
 ```
 
-### Refazendo o build
+### Rebuilding
 
-Sempre que o código-fonte for alterado, rode `build-whatslinux.sh` novamente antes de `install-whatslinux.sh`, para que a instalação reflita a versão mais recente do bundle.
+Whenever the source code changes, run `build-whatslinux.sh` again before `install-whatslinux.sh` so the installation reflects the latest bundle version.
 
-## Desinstalação
+## Uninstallation
 
-O script `uninstall-whatslinux.sh` remove exatamente o que `install-whatslinux.sh` instalou: o bundle em `~/.local/opt/whatslinux`, o comando em `~/.local/bin/whatslinux` e o atalho `.desktop`.
+The `uninstall-whatslinux.sh` script removes exactly what `install-whatslinux.sh` installed: the bundle in `~/.local/opt/whatslinux`, the command in `~/.local/bin/whatslinux`, and the `.desktop` shortcut.
 
 ```bash
 chmod +x scripts/uninstall-whatslinux.sh
 ./scripts/uninstall-whatslinux.sh
 ```
 
-Por padrão, os dados de sessão (`~/.local/share/whatsapp-app`) são **preservados** — assim, se você reinstalar depois, não precisa escanear o QR Code de novo. Para remover também a sessão salva:
+By default, session data (`~/.local/share/whatsapp-app`) is preserved — so if you reinstall later, you won't need to scan the QR code again. To remove the saved session as well:
 
 ```bash
 ./scripts/uninstall-whatslinux.sh --purge
 ```
 
-Se você instalou em um caminho customizado (via `WHATSAPP_INSTALL_ROOT`/`WHATSAPP_BIN_DIR`), defina as mesmas variáveis antes de desinstalar:
+If you installed in a custom path (using `WHATSAPP_INSTALL_ROOT`/`WHATSAPP_BIN_DIR`), define the same variables before uninstalling:
 
 ```bash
-WHATSAPP_INSTALL_ROOT="/caminho/customizado" \
-WHATSAPP_BIN_DIR="/outro/caminho" \
+WHATSAPP_INSTALL_ROOT="/custom/path" \
+WHATSAPP_BIN_DIR="/another/path" \
 ./scripts/uninstall-whatslinux.sh
 ```
 
-## Onde a sessão fica salva
+## Where the session is stored
 
-Os dados de sessão (cookies, localStorage, cache) ficam em:
+Session data (cookies, localStorage, cache) is stored in:
 
 ```
 ~/.local/share/whatsapp-app
 ```
 
+## Notes
 
-## Avisos
+- This project was created for educational purposes and personal use.
+- Since there is no official public API for third-party clients, WhatsLinux works as a wrapper around WhatsApp Web and may stop working if Meta changes something that breaks this access pattern.
+- Session data stored locally does not have additional encryption beyond what WhatsApp Web itself already implements — this is the same level of exposure as saving a session in a regular browser.
 
-- Como não há API pública oficial para clientes de terceiros, o WhatsLinux funciona como um wrapper sobre o WhatsApp Web, e pode parar de funcionar caso a Meta faça mudanças que quebrem esse tipo de acesso.
-- Os dados de sessão salvos localmente não possuem criptografia adicional além da que o próprio WhatsApp Web já implementa — o mesmo nível de exposição que existe ao salvar sessão em qualquer navegador comum.
-
-## Licença
+## License
 MIT

@@ -5,9 +5,9 @@ WHATSAPP_HOST = "web.whatsapp.com"
 
 
 class LockedPage(QWebEnginePage):
-    """Bloqueia qualquer navegação pra fora do domínio do WhatsApp Web.
-    Links externos (ex: um link recebido numa conversa) abrem no navegador
-    padrão do sistema em vez de navegar dentro do app."""
+    """Blocks any navigation outside the WhatsApp Web domain.
+    External links (for example, links received in a chat) open in the
+    system's default browser instead of navigating inside the app."""
 
     def acceptNavigationRequest(self, url, nav_type, is_main_frame):
         if WHATSAPP_HOST in url.host():
@@ -20,9 +20,9 @@ class LockedPage(QWebEnginePage):
         return True
 
     def createWindow(self, window_type):
-        # Quando o WhatsApp tenta abrir um link em nova janela/aba,
-        # capturamos a URL e mandamos pro navegador padrão em vez de
-        # deixar o Qt criar uma nova QWebEngineView
+        # When WhatsApp tries to open a link in a new window/tab, we capture the
+        # URL and send it to the default browser instead of letting Qt create a
+        # new QWebEngineView.
         temp_page = QWebEnginePage(self.profile(), self)
         temp_page.urlChanged.connect(
             lambda url: (QDesktopServices.openUrl(url), temp_page.deleteLater())

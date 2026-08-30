@@ -29,12 +29,12 @@ class WhatsAppWindow(QMainWindow):
             self.setWindowIcon(QIcon(icon_path))
         self.resize(1000, 700)
 
-        # Diretório onde a sessão será salva
+        # Directory where the session will be stored
         storage_path = os.path.expanduser("~/.local/share/whatsapp-app")
         os.makedirs(storage_path, exist_ok=True)
 
-        # Perfil NOMEADO, SEM parent (vida controlada manualmente por nós,
-        # evita a ordem de destruição incerta que gerava o aviso
+        # Named profile, no parent (lifetime managed manually to avoid the
+        # uncertain destruction order that triggered the warning
         # "Release of profile requested but WebEnginePage still not deleted")
         self.profile = QWebEngineProfile("whatsapp-session")
         self.profile.setPersistentStoragePath(storage_path)
@@ -47,19 +47,19 @@ class WhatsAppWindow(QMainWindow):
             QWebEngineProfile.PersistentCookiesPolicy.ForcePersistentCookies
         )
 
-        # Page é FILHA do profile, não da janela — garante que o Qt
-        # a destrua antes do profile. Usa LockedPage pra travar a
-        # navegação sempre dentro do domínio do WhatsApp Web
+        # The page is a child of the profile, not the window — ensures Qt
+        # destroys it before the profile. Uses LockedPage to keep navigation
+        # always inside the WhatsApp Web domain.
         self.page_obj = LockedPage(self.profile, self.profile)
         self.browser = QWebEngineView()
         self.browser.setPage(self.page_obj)
         self.browser.setUrl(QUrl("https://web.whatsapp.com"))
         self.setCentralWidget(self.browser)
 
-        # Repassa notificações do WhatsApp Web pro notify-send (nativo do Linux)
+        # Forward WhatsApp Web notifications to notify-send (native on Linux)
         self.profile.setNotificationPresenter(self.handle_notification)
 
-        # F5 dá refresh na página
+        # F5 refreshes the page
         self.refresh_shortcut = QShortcut(QKeySequence("F5"), self)
         self.refresh_shortcut.activated.connect(self.browser.reload)
 
@@ -82,12 +82,12 @@ class WhatsAppWindow(QMainWindow):
         try:
             subprocess.Popen(cmd)
         except FileNotFoundError:
-            # notify-send não instalado no sistema; evita crashar o app
-            print("notify-send não encontrado — instale libnotify-bin/libnotify")
+            # notify-send is not installed on the system; avoids crashing the app
+            print("notify-send not found — install libnotify-bin/libnotify")
 
     def closeEvent(self, event):
-        # Desvincula a page da view e deleta explicitamente ANTES do
-        # profile ser destruído, na ordem certa
+        # Detach the page from the view and delete it explicitly before the
+        # profile is destroyed, in the correct order.
         self.browser.setPage(None)
         self.page_obj.deleteLater()
         self.page_obj = None

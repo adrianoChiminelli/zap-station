@@ -16,8 +16,8 @@ for arg in "$@"; do
       REMOVE_SESSION=1
       ;;
     *)
-      echo "Argumento desconhecido: $arg"
-      echo "Uso: $0 [--purge]"
+      echo "Unknown argument: $arg"
+      echo "Usage: $0 [--purge]"
       exit 1
       ;;
   esac
@@ -27,47 +27,47 @@ removed_anything=0
 
 if [[ -d "$TARGET_BUNDLE_DIR" ]]; then
   rm -rf "$TARGET_BUNDLE_DIR"
-  echo "Removido: $TARGET_BUNDLE_DIR"
+  echo "Removed: $TARGET_BUNDLE_DIR"
   removed_anything=1
 else
-  echo "Nada encontrado em: $TARGET_BUNDLE_DIR"
+  echo "Nothing found in: $TARGET_BUNDLE_DIR"
 fi
 
 if [[ -f "$TARGET_BIN" ]]; then
   rm -f "$TARGET_BIN"
-  echo "Removido: $TARGET_BIN"
+  echo "Removed: $TARGET_BIN"
   removed_anything=1
 else
-  echo "Nada encontrado em: $TARGET_BIN"
+  echo "Nothing found in: $TARGET_BIN"
 fi
 
 if [[ -f "$TARGET_DESKTOP" ]]; then
   rm -f "$TARGET_DESKTOP"
-  echo "Removido: $TARGET_DESKTOP"
+  echo "Removed: $TARGET_DESKTOP"
   removed_anything=1
 else
-  echo "Nada encontrado em: $TARGET_DESKTOP"
+  echo "Nothing found in: $TARGET_DESKTOP"
 fi
 
 SESSION_DIR="$HOME/.local/share/whatsapp-app"
 if [[ "$REMOVE_SESSION" -eq 1 ]]; then
   if [[ -d "$SESSION_DIR" ]]; then
     rm -rf "$SESSION_DIR"
-    echo "Removido (sessão): $SESSION_DIR"
+    echo "Removed (session): $SESSION_DIR"
   else
-    echo "Nada encontrado em: $SESSION_DIR"
+    echo "Nothing found in: $SESSION_DIR"
   fi
 else
   if [[ -d "$SESSION_DIR" ]]; then
     echo ""
-    echo "Dados de sessão preservados em: $SESSION_DIR"
-    echo "Para removê-los também, rode: $0 --purge"
+    echo "Session data preserved in: $SESSION_DIR"
+    echo "To remove it as well, run: $0 --purge"
   fi
 fi
 
 echo ""
 if [[ "$removed_anything" -eq 1 ]]; then
-  echo "Desinstalação concluída."
+  echo "Uninstallation completed."
 else
-  echo "Nada foi encontrado para remover — o app já parece desinstalado."
+  echo "Nothing was found to remove — the app appears to already be uninstalled."
 fi
